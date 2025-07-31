@@ -31,6 +31,38 @@ def get_product_info(url):
     except (AttributeError, TypeError):
         price = 'No price found'
 
-    return title, image_url, price 
+    return title, image_url, price
 
+def save_image(image_url, product_name):
+    folder = "images"
+    os.makedirs(folder, exist_ok=True)
+
+    valid_filename = re.sub(r'[<>:"/\\|?*]','',product_name)
+    valid_filename = valid_filename[:10]
+    filepath =os.path.join(folder, valid_filename + '.jpg')
+
+    base, ext = os.path.splitext(filepath)
+    counter = 1
+    while os.path.exists(filepath):
+        filepath = f"{base}_{counter}{ext}"
+        counter += 1
+
+    response = requests.get(image_url, stream=True)
+    if response.status_code == 200:
+        with open(filepath, 'wb') as file:
+            for chuck in response.iter_content(1024):
+                file.write(chuck)
+        return filepath
+    return None
+
+def save_to_excel(data):
+    df = pd.DataFrame(data)
+    file_name = 'searches.xlsx'
+
+    if os.path.exists(file_name):
+        existing_df = pd.read_excel(file_name)
+        df = pd.concat([existing_df, df], ignore_index=True)
+
+    df.to_excel(file_name, index=False)
+    return  file_name
 
