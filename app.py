@@ -10,15 +10,8 @@ from streamlit.testing.v1.element_tree import Title
 
 
 def get_product_info(url):
-    headers = {
-        'Host': 'www.amazon.com',
-        'User-Agent': '...',
-        'Accept': 'text/html,application/xhtml+xml',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Accept-Encoding': 'gzip, deflate, br',
-        'Connection': 'keep-alive',
-        'Upgrade-Insecure-Requests': '1',
-        'Referer': 'https://www.google.com'
+    headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
+    'Accept-Language': 'en-Us, en;q=0.9',
     }
 
     response = requests.get(url, headers=headers)
